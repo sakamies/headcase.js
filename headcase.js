@@ -1,7 +1,7 @@
 /*
 
-Headcase.js, uses matchMedia() polyfill by Scott Jehl, Paul Irish, Nicholas Zakas
-
+Headcase.js (Uses matchMedia() polyfill by Scott Jehl, Paul Irish, Nicholas Zakas)
+===
 
 Usage
 -----
