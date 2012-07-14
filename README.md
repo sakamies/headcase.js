@@ -4,6 +4,13 @@ Headcase.js
 Reusable Media Queries in Your &lt;head&gt;
 ---
 
+[This article](http://mattwilcox.net/archive/entry/id/1091/) by Matt Wilcox pretty much explains the idea, but basically, headcase came to be so you could use this stuff for real:
+
+    <head>
+      <meta name='case' data='breakpoint1' media='min-width:350px' />
+      <meta name='case' data='breakpoint2' media='min-width:1000px' />
+    </head>
+
 Usage
 -----
 
@@ -44,17 +51,19 @@ So far tested on, and seems to work on the latest Safari, Chrome, Firefox and Op
 TODO
 ---
 
-- Should probably use a MediaQueryList polyfill instead of a new property on window (https://developer.mozilla.org/en/DOM/MediaQueryList)
-  - Use listeners for changing stat instead of resize event, there's already some work on that (http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
+- Should probably use/make a MediaQueryList polyfill instead of a new property on window (https://developer.mozilla.org/en/DOM/MediaQueryList)
+  - Use listeners for changing state instead of resize event, there's already some work on that (http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
 - Testing, testing and testing
 - Cross browser complatibility.
 - Get rid of those global functions
 
 
-What made me do this and further reading
+Further reading
 ---
 
-http://mattwilcox.net/archive/entry/id/1091/
-http://adactio.com/journal/5429/
-http://foolproof.me/post/26907878219/named-media-queries
-https://github.com/paulirish/matchMedia.js
+- [Managing responsive designs is hard, so let's use our &lt;head&gt;](http://mattwilcox.net/archive/entry/id/1091/)
+- [Conditional CSS](http://adactio.com/journal/5429/)
+- [Named media queries](http://foolproof.me/post/26907878219/named-media-queries)
+- [matchMedia() polyfill](https://github.com/paulirish/matchMedia.js)
+- [MediaQueryList (MDN)](https://developer.mozilla.org/en/DOM/MediaQueryList)
+- [Use CSS transitions to link Media Queries and JavaScript](http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
