@@ -7,8 +7,8 @@ Reusable Media Queries in Your &lt;head&gt;
 [This article](http://mattwilcox.net/archive/entry/id/1091/) by Matt Wilcox pretty much explains the idea, but basically, headcase came to be so you could use this stuff for real:
 
     <head>
-      <meta name='case' data='breakpoint1' media='min-width:350px' />
-      <meta name='case' data='breakpoint2' media='min-width:1000px' />
+      <meta name='case' data='breakpoint1' media='(min-width:350px)' />
+      <meta name='case' data='breakpoint2' media='(min-width:1000px)' />
     </head>
 
 Usage
@@ -26,8 +26,7 @@ Use it like this in your css:
       border: 5px dashed orange;
     }
 
-If a named media query matches, a class of <code>case-Name</code> will be added
-A class of case-NAME will be added to the &lt;html&gt; element if there is a match, also window.caseList will be added in javascript.
+If a named media query matches, a class of <code>case-Name</code> will be added will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
 
 
 Pros:
