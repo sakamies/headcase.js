@@ -44,6 +44,8 @@ So far tested on, and seems to work on the latest Safari, Chrome, Firefox and Op
 TODO
 ---
 
+- Should probably use a MediaQueryList polyfill instead of a new property on window (https://developer.mozilla.org/en/DOM/MediaQueryList)
+  - Use listeners for changing stat instead of resize event, there's already some work on that (http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
 - Testing, testing and testing
 - Cross browser complatibility.
 - Get rid of those global functions
