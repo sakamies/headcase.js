@@ -56,6 +56,7 @@ TODO
 - Testing, testing and testing
 - Cross browser complatibility.
 - Get rid of those global functions
+- Better readme
 
 
 Further reading
