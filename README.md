@@ -28,7 +28,7 @@ Use it like this in your css:
       border: 5px dashed orange;
     }
 
-If a named media query matches, a class of <code>case-NAME</code> will be added will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
+If a named media query matches, a class of <code>case-NAME</code> will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
 
 
 Pros:
@@ -38,7 +38,7 @@ Pros:
 
 Cons:
 
-- Script needs to be after <meta> elements
+- Script needs to be after &lt;meta&gt; elements
 - Any script using these media queries needs to come after headcase.js
 - Help me out here?
 
@@ -52,10 +52,10 @@ So far tested on, and seems to work on the latest Safari, Chrome, Firefox and Op
 TODO
 ---
 
-- Should probably use/make a MediaQueryList polyfill instead of a new property on window (https://developer.mozilla.org/en/DOM/MediaQueryList)
+- Should probably use/make a MediaQueryList polyfill instead of a new property on <code>window</code> (https://developer.mozilla.org/en/DOM/MediaQueryList)
   - Use listeners for changing state instead of resize event, there's already some work on that (http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
 - Testing, testing and testing
-- Cross browser complatibility.
+- Cross browser compatibility
 - Get rid of those global functions
 - Better readme
 
