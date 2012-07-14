@@ -26,7 +26,7 @@ Use it like this in your css:
       border: 5px dashed orange;
     }
 
-If a named media query matches, a class of <code>case-Name</code> will be added will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
+If a named media query matches, a class of <code>case-NAME</code> will be added will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
 
 
 Pros:
