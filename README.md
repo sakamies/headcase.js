@@ -35,11 +35,18 @@ Cons:
 - Help me out here?
 
 
+Compatibility
+---
+
+So far tested on, and seems to work on the latest Safari, Chrome, Firefox and Opera.
+
+
 TODO
 ---
 
-- Testing, testing and lots of testing
+- Testing, testing and testing
 - Cross browser complatibility.
+- Get rid of those global functions
 
 
 What made me do this and further reading
