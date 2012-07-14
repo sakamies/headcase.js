@@ -16,7 +16,7 @@ Headcase itself is just a few lines of code, please dive in and make it better. 
 Usage
 -----
 
-Include <code>headcase.js</code> in your page. You can now write named media queries in your <code>&lt;head&gt;</code> and reuse them in your css and javascript. All <code>&lt;meta name="case"&lt;</code> elements need to be placed before <code>headcase.js</code> and all scripts using queries parsed by <code>headcase.js</code> need to be placed after <code>headcase.js</code>.
+Include <code>headcase.js</code> in your page. You can now write named media queries in your <code>&lt;head&gt;</code> and reuse them in your css and javascript. All <code>&lt;meta name="case"&gt;</code> elements need to be placed before <code>headcase.js</code> and all scripts using queries parsed by <code>headcase.js</code> need to be placed after <code>headcase.js</code>.
 
 Write a named query like this:
 
