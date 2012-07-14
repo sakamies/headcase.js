@@ -97,8 +97,7 @@ function logCases() {
 window.caseList = checkCases();
 
 window.addEventListener('resize', function() {
-  console.log('resize');
   window.caseList = checkCases();
-  logCases();
+//  logCases();
 })
-logCases();
+//logCases();

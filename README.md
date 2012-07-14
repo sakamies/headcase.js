@@ -11,6 +11,8 @@ Reusable Media Queries in Your &lt;head&gt;
       <meta name='case' data='breakpoint2' media='(min-width:1000px)' />
     </head>
 
+Headcase itself is just a few lines of code, please dive in and make it better. :)
+
 Usage
 -----
 
@@ -32,7 +34,7 @@ If a named media query matches, a class of <code>case-NAME</code> will be added 
 Pros:
 
 - Write media queries only once and reuse them in your css and js
-- Cleaner css, no more @media rules, just regular selectors
+- Cleaner css, no need for @media rules, just regular selectors
 
 Cons:
 
