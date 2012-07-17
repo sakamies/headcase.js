@@ -1,8 +1,7 @@
-Headcase.js
-===
+# Headcase.js
 
-Reusable Media Queries in Your &lt;head&gt;
----
+## Reusable Media Queries in Your &lt;head&gt;
+
 
 [This article](http://mattwilcox.net/archive/entry/id/1091/) by Matt Wilcox pretty much explains the idea, but basically, headcase came to be so you could use this stuff for real:
 
@@ -11,20 +10,18 @@ Reusable Media Queries in Your &lt;head&gt;
       <meta name='case' data='breakpoint2' media='(min-width:1000px)' />
     </head>
 
-By defining the media queries in the <code>&lt;head&gt;</code> of your document, they'll be reusable in css and javascript. In css, you can use regular descendant selectors instead of media queries. This simplifies the syntax and doesn't require changing the same query in multiple places if you need to use different rules based on queries apart from each other. In javascript, you can use <code>caseChange</code> events to respond to media changes.
+By defining the media queries in the <code>&lt;head&gt;</code> of your document, they'll be reusable in css and javascript. In css, you can use regular descendant selectors instead of media queries. This simplifies the syntax and removes the need to ever copy & paste the same query in multiple places. In javascript, you can use <code>caseChange</code> events to respond to media changes.
 
-Headcase itself is just a few lines of code, please dive in and make it better. :)
 
-Usage
------
+## Usage
 
 Include <code>headcase.js</code> in your page. You can now write named media queries in your <code>&lt;head&gt;</code> and reuse them in your css and javascript. Note that <code>&lt;meta name="case"&gt;</code> elements need to be placed before <code>headcase.js</code>.
 
-Write a named query like this:
+### Write a case
 
     <meta name='case' data='NAME' media='(max-width:350px)' />
 
-Use it like this in your css:
+### Use in CSS
 
     .case-NAME h1 {
       border: 5px dashed orange;
@@ -32,14 +29,14 @@ Use it like this in your css:
 
 If a named media query matches, a class of <code>case-NAME</code> will be added to the <code>&lt;html&gt;</code> element.
 
-Use it in javascript javascript like this:
+### Use in Javascript
 
     document.addEventListener('caseChange', function(event) {
       caseName = event.detail.caseName;
       matches = event.detail.matches;
     });
 
-The cases are checked whenever a <code>resize</code> or an <code>orientationchange</code> event is fired. All cases also fire an event right after <code>DOMContentLoaded</code>, so you can attach event listeners on <code>DOMContentLoaded</code> and do stuff based on cases when the page loads. When a media query defined in a case matches, or no longer matches, an event is dispatched, with the new state of the case in <code>event.matches</code>.
+The cases are checked whenever a <code>resize</code> or an <code>orientationchange</code> event is fired. All cases also fire an event right after <code>DOMContentLoaded</code>, so you can attach event listeners on <code>DOMContentLoaded</code> and do stuff based on cases when the page loads. When a media query defined in a case matches, or no longer matches, an event is dispatched, with the new state of the case in <code>event.detail.matches</code>.
 
 
 Compatibility
