@@ -11,12 +11,14 @@ Reusable Media Queries in Your &lt;head&gt;
       <meta name='case' data='breakpoint2' media='(min-width:1000px)' />
     </head>
 
+By defining the media queries in the <code>&lt;head&gt;</code> of your document, they'll be reusable in css and javascript. In css, you can use regular descendant selectors instead of media queries. This simplifies the syntax and doesn't require changing the same query in multiple places if you need to use different rules based on queries apart from each other. In javascript, you can use <code>caseChange</code> events to respond to media changes.
+
 Headcase itself is just a few lines of code, please dive in and make it better. :)
 
 Usage
 -----
 
-Include <code>headcase.js</code> in your page. You can now write named media queries in your <code>&lt;head&gt;</code> and reuse them in your css and javascript. All <code>&lt;meta name="case"&gt;</code> elements need to be placed before <code>headcase.js</code> and all scripts using queries parsed by <code>headcase.js</code> need to be placed after <code>headcase.js</code>.
+Include <code>headcase.js</code> in your page. You can now write named media queries in your <code>&lt;head&gt;</code> and reuse them in your css and javascript. Note that <code>&lt;meta name="case"&gt;</code> elements need to be placed before <code>headcase.js</code>.
 
 Write a named query like this:
 
@@ -28,36 +30,33 @@ Use it like this in your css:
       border: 5px dashed orange;
     }
 
-If a named media query matches, a class of <code>case-NAME</code> will be added to the <code>&lt;html&gt;</code> element, also a <code>window.caseList</code> array will be added in javascript. Each case in it has the attributes of the corresponding meta element as properties and a matches property that tells if that case is true or false.
+If a named media query matches, a class of <code>case-NAME</code> will be added to the <code>&lt;html&gt;</code> element.
 
+Use it in javascript javascript like this:
 
-Pros:
+    document.addEventListener('caseChange', function(event) {
+      caseName = event.detail.caseName;
+      matches = event.detail.matches;
+    });
 
-- Write media queries only once and reuse them in your css and js
-- Cleaner css, no need for @media rules, just regular selectors
-
-Cons:
-
-- Script needs to be after &lt;meta&gt; elements
-- Any script using these media queries needs to come after headcase.js
-- Help me out here?
+The cases are checked whenever a <code>resize</code> or an <code>orientationchange</code> event is fired. All cases also fire an event right after <code>DOMContentLoaded</code>, so you can attach event listeners on <code>DOMContentLoaded</code> and do stuff based on cases when the page loads. When a media query defined in a case matches, or no longer matches, an event is dispatched, with the new state of the case in <code>event.matches</code>.
 
 
 Compatibility
 ---
 
-So far tested on, and seems to work on the latest Safari, Chrome, Firefox and Opera.
+So far tested on Safari, Firefox, Chrome and Opera. Css works on all these, but custom events are not yet supported on Safari. No IE testing done yet.
 
 
 TODO
 ---
 
-- Should probably use/make a MediaQueryList polyfill instead of a new property on <code>window</code> (https://developer.mozilla.org/en/DOM/MediaQueryList)
-  - Use listeners for changing state instead of resize event, there's already some work on that (http://www.paulrhayes.com/2011-11/use-css-transitions-to-link-media-queries-and-javascript/)
+- Find a polyfill for custom events. jQuery would work, but i'd like to avoid dependencies, might be necessary if there starts to be a need for more polyfills.
+- The logic here assumes the list of cases stays exactly the same once it's been created, should there be the possibility to add or remove cases, if so, how? An API would be fine, but wouldn't see changes if meta elements were added by other means. Is there a way to detect that, is it worthwhile to do so?
+- window.caselist object should not be used in authored javascript. It's correctness at any given time cannot be guaranteed (If you try to check the caseList in your own resize event handler, the resize event that checks the cases could be done running, or it might not, who knows.), so it's only used internally by headcase for keeping track if the state of a query has changed. The meta elements are the canonical caseList for authors to use, and can be accessed and tested with normal DOM methods. Like so: window.matchMedia(caseNode.getAttribute('media')); Events are dispatched any time the state of a case changes. Only the events should be used in scripts.
+- Discard window.caseList and use window.headcase instead. Would make it's more obvious that the object is for the script, not for common use. Also should put all the functions inside there so they're not global.
 - Testing, testing and testing
-- Cross browser compatibility
-- Get rid of those global functions
-- Better readme
+- Cross browser compatibility (I hate IE)
 
 
 Further reading

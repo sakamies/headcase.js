@@ -1,27 +1,63 @@
 <!DOCTYPE HTML>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Headcase</title>
 
-  <meta name='case' data='small' media='(min-width:0px) and (max-width:500px)' />
-  <meta name='case' data='medium' media='(min-width:500px) and (max-width:700px)' />
-  <meta name='case' data='wide' media='(min-width:700px)' />
+  <meta name='case' data='small' media='(min-width:0px) and (max-width:450px)' />
+  <meta name='case' data='medium' media='(min-width:450px) and (max-width:760px)' />
+  <meta name='case' data='wide' media='(min-width:760px)' />
 
   <script src="../../scripts/headcase/headcase.js" type="text/javascript" charset="utf-8"></script>
+
+  <style type="text/css">
+    .case-small .css:after {
+      content: 'Small';
+    }
+    .case-medium .css:after {
+      content: 'Medium';
+    }
+    .case-wide .css:after {
+      content: 'Wide';
+    }
+  </style>
+
+  <script type="text/javascript" charset="utf-8">
+  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('caseChange', function(event) {
+      console.log('caseChange.detail', event.detail);
+    }, false);
+  }, false);
+  </script>
 
 </head>
 <body>
   <h1>Headcase.js</h1>
-  <style type="text/css">
-    .case-small h2:after {
-      content: 'Small';
-    }
-    .case-medium h2:after {
-      content: 'Medium';
-    }
-    .case-wide h2:after {
-      content: 'Wide';
-    }
-  </style>
-  <h2>Case: </h2>
+
+  <h2>Cases on this page</h2>
+
+  <pre>&lt;meta name='case' data='small' media='(min-width:0px) and (max-width:450px)' /&gt;
+&lt;meta name='case' data='medium' media='(min-width:450px) and (max-width:760px)' /&gt;
+&lt;meta name='case' data='wide' media='(min-width:760px)' /&gt;</pre>
+
+  <h2>Usage with css: </h2>
+
+  <p class="css">Case: </p>
+
+  <pre>.case-small .css:after {
+  content: 'Small';
+}
+.case-medium .css:after {
+  content: 'Medium';
+}
+.case-wide .css:after {
+  content: 'Wide';
+}</pre>
+
+  <h2>Cases via javascript events</h2>
+  <pre>document.addEventListener('caseChange', function(event) {
+    console.log('caseChange.detail', event.detail);
+  });</pre>
+  <p>(Fiddle with the width and check your inspector console. The custom events work on Firefox, Opera and Chrome, need to find a polyfill for this)</p>
 </body>
