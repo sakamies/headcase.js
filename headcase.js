@@ -1,27 +1,5 @@
 /*
-
 Headcase.js (Uses matchMedia() polyfill by Scott Jehl, Paul Irish, Nicholas Zakas)
-===
-
-Usage
------
-
-Include headcase.js in your page. You can now write named media queries in your <head> and reuse them in your css and javascript.
-
-Write a query like this:
-
-    <meta name='case' data='NAME' media='(max-width:350px)' /> (Read http://mattwilcox.net/archive/entry/id/1091/)
-
-Use it like this in your css:
-
-    .case-NAME h1 {
-      border: 5px dashed orange;
-    }
-
-A class of case-NAME will be added to the <html> element if there is a match, also window.caseList will be added in javascript.
-
-NOTE: Headcase.js needs to be included after any media query meta tags, or they cannot be seen by the script.
-
 */
 
 
@@ -58,46 +36,79 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 
 /* Headcase */
 
-function checkCases() {
-  var caseList = [];
-  var data;
+function updateCases() {
+
+  if (typeof window.caseList == 'undefined') {
+    window.caseList = [];
+  };
+
+  var caseNodes = document.querySelectorAll('meta[name=case]');
+  var caseName;
   var media;
   var matches;
+  var caseNode;
+  var prevMatches
 
-  var cases = document.querySelectorAll('meta[name=case]');
+  for (var i = 0; i < caseNodes.length; i++) {
 
-  for (var i = 0; i < cases.length; i++) {
-
-    caseList[i] = {};
-
-    data = cases[i].getAttribute('data');
-    media = cases[i].getAttribute('media');
+    /* get some case properties */
+    caseName = caseNodes[i].getAttribute('data');
+    media = caseNodes[i].getAttribute('media');
     matches = window.matchMedia(media).matches;
+    caseNode = caseNodes[i];
 
+    if (typeof window.caseList[i] != 'undefined') {
+      prevMatches = window.caseList[i].matches;
+    }
+
+    /* put the case immediately into window.caseList  */
+    window.caseList[i] = {};
+    window.caseList[i].caseName = caseName;
+    window.caseList[i].media = media;
+    window.caseList[i].matches = matches;
+
+    /* 2. Update classes on <html> */
     if (matches) {
-      document.documentElement.classList.add('case-' + data);
+      document.documentElement.classList.add('case-' + caseName);
     }
     else {
-      document.documentElement.classList.remove('case-' + data);
+      document.documentElement.classList.remove('case-' + caseName);
     }
 
-    caseList[i].data = data;
-    caseList[i].media = media;
-    caseList[i].matches = matches;
+    /* 3. dispatch caseChange events */
+    if (document.createEvent && (prevMatches !== matches)) {
+      var event = document.createEvent('CustomEvent');
+
+      var caseChangeEvent = new CustomEvent(
+        "caseChange",
+        {
+          detail: {  
+            caseName: caseName,
+            media: media,
+            matches: matches,
+            caseNode: caseNode
+          },  
+          bubbles: true,  
+          cancelable: true
+        }
+      );
+      document.dispatchEvent(caseChangeEvent);
+
+    };
 
   };
 
-  return caseList;
+  return window.caseList;
 }
-function logCases() {
-  console.log('window.caseList:', window.caseList);
-  console.log('<html> classList:', document.documentElement.classList.toString());
-}
-
-window.caseList = checkCases();
 
 window.addEventListener('resize', function() {
-  window.caseList = checkCases();
-//  logCases();
-})
-//logCases();
+  updateCases();
+});
+window.addEventListener('orientationchange', function() {
+  updateCases();
+});
+window.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    updateCases();
+  }, 0);
+});
