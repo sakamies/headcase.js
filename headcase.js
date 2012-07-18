@@ -36,10 +36,12 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 
 /* Headcase */
 
-function updateCases() {
+window.headcase = {};
 
-  if (typeof window.caseList == 'undefined') {
-    window.caseList = [];
+window.headcase.update = function() {
+
+  if (typeof window.headcase.caseList == 'undefined') {
+    window.headcase.caseList = [];
   };
 
   var caseNodes = document.querySelectorAll('meta[name=case]');
@@ -57,15 +59,15 @@ function updateCases() {
     matches = window.matchMedia(media).matches;
     caseNode = caseNodes[i];
 
-    if (typeof window.caseList[i] != 'undefined') {
-      prevMatches = window.caseList[i].matches;
+    if (typeof window.headcase.caseList[i] != 'undefined') {
+      prevMatches = window.headcase.caseList[i].matches;
     }
 
-    /* put the case immediately into window.caseList  */
-    window.caseList[i] = {};
-    window.caseList[i].caseName = caseName;
-    window.caseList[i].media = media;
-    window.caseList[i].matches = matches;
+    /* put the case immediately into window.headcase.caseList  */
+    window.headcase.caseList[i] = {};
+    window.headcase.caseList[i].caseName = caseName;
+    window.headcase.caseList[i].media = media;
+    window.headcase.caseList[i].matches = matches;
 
     /* 2. Update classes on <html> */
     if (matches) {
@@ -79,36 +81,38 @@ function updateCases() {
     if (document.createEvent && (prevMatches !== matches)) {
       var event = document.createEvent('CustomEvent');
 
-      var caseChangeEvent = new CustomEvent(
-        "caseChange",
-        {
-          detail: {  
-            caseName: caseName,
-            media: media,
-            matches: matches,
-            caseNode: caseNode
-          },  
-          bubbles: true,  
-          cancelable: true
-        }
-      );
-      document.dispatchEvent(caseChangeEvent);
+      if (typeof CustomEvent != 'undefined') {
+        var caseChangeEvent = new CustomEvent(
+          "caseChange",
+          {
+            detail: {  
+              caseName: caseName,
+              media: media,
+              matches: matches,
+              caseNode: caseNode
+            },  
+            bubbles: true,  
+            cancelable: true
+          }
+        );
+        document.dispatchEvent(caseChangeEvent);
+      };
 
     };
 
   };
 
-  return window.caseList;
+  return window.headcase.caseList;
 }
 
 window.addEventListener('resize', function() {
-  updateCases();
+  window.headcase.update();
 });
 window.addEventListener('orientationchange', function() {
-  updateCases();
+  window.headcase.update();
 });
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
-    updateCases();
+    window.headcase.update();
   }, 0);
 });
