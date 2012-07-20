@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Headcase</title>
+  <link rel="stylesheet" href="test.css">
 
   <meta name='case' data='small' media='(min-width:0px) and (max-width:450px)' />
   <meta name='case' data='medium' media='(min-width:450px) and (max-width:760px)' />
@@ -59,5 +60,5 @@
   <pre>document.addEventListener('caseChange', function(event) {
     console.log('caseChange.detail', event.detail);
   });</pre>
-  <p>(Fiddle with the width and check your inspector console. The custom events work on Firefox, Opera and Chrome, need to find a polyfill for this)</p>
+  <p>(Fiddle with the browser window width and check your inspector console. The custom events work on Firefox, Opera and Chrome, need to find a polyfill for this)</p>
 </body>
