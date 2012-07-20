@@ -46,13 +46,13 @@ If a named media query matches, a class of <code>case-NAME</code> will be added 
 
     }, false);
 
-The cases are checked whenever a <code>resize</code> or an <code>orientationchange</code> event is fired. All cases also fire an event right after <code>DOMContentLoaded</code>, so you can attach event listeners on <code>DOMContentLoaded</code> and do stuff based on cases when the page loads. When a media query defined in a case matches, or no longer matches, an event is dispatched, with the new state of the case in <code>event.detail.matches</code>.
+The cases are re-checked whenever a <code>resize</code> or an <code>orientationchange</code> event is fired. All cases fire an initial event right after <code>DOMContentLoaded</code>, so you can attach event listeners inside your own <code>DOMContentLoaded</code> and do stuff based on cases when the page loads. When a media query defined in a case matches, or no longer matches, an event is dispatched, with the new state of the case in <code>event.detail.matches</code>.
 
 
 Compatibility
 ---
 
-So far tested on Safari, Firefox, Chrome and Opera. Css works on all these, but custom events are not yet supported on Safari. No IE testing done yet.
+So far tested to work on the latest version of Safari, Firefox, Chrome and Opera. No IE testing done yet.
 
 
 TODO
