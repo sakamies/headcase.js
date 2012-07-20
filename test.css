@@ -1,6 +1,59 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  padding-top: .5em;
+}
+
 pre {
   white-space: pre-wrap;
   font-size: 13px;
-  background: #e3e3e3;
+  background: rgba(0,0,0,.12);
   padding: .5em;
+}
+
+.case-visual {
+  position: fixed;
+  top: 0px;
+  line-height: 1.6em;
+  font-weight: bold;
+  text-align: center;
+  font-size: .75em;
+  overflow: hidden;
+}
+.small {
+  left: 0;
+  width: 450px;
+  text-align: center;
+  color: white;
+  background: #404040;;
+}
+.medium {
+  left: 450px;
+  width: 310px;
+  text-align: center;
+  color: white;
+  background: #6B6B6B;
+}
+.wide {
+  left: 760px;
+  width: auto;
+  right: 0px;
+  color: white;
+  background: #9C9C9C;;
+}
+
+.case-medium .wide {
+  display: none;
+}
+.case-medium .medium {
+  right: 0px;
+  width: auto;
+}
+
+.case-small .medium,
+.case-small .wide {
+  display: none;
+}
+.case-small .small {
+  right: 0px;
+  width: auto;
 }

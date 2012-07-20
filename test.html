@@ -3,62 +3,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Headcase</title>
+  <title>Headcase.js test page</title>
   <link rel="stylesheet" href="test.css">
 
-  <meta name='case' data='small' media='(min-width:0px) and (max-width:450px)' />
-  <meta name='case' data='medium' media='(min-width:450px) and (max-width:760px)' />
-  <meta name='case' data='wide' media='(min-width:760px)' />
+  <meta name='case' id="small" content='small' media='(min-width:0px) and (max-width:450px)' />
+  <meta name='case' content='medium' media='(min-width:450px) and (max-width:760px)' />
+  <meta name='case' content='wide' media='(min-width:760px)' />
 
   <script src="../../scripts/headcase/headcase.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css">
-    .case-small .css:after {
+    .case-small .css-text:after {
       content: 'Small';
     }
-    .case-medium .css:after {
+    .case-medium .css-text:after {
       content: 'Medium';
     }
-    .case-wide .css:after {
+    .case-wide .css-text:after {
       content: 'Wide';
     }
   </style>
 
   <script type="text/javascript" charset="utf-8">
   document.addEventListener('DOMContentLoaded', function() {
+
+    //Handle a particular case change
+    document.getElementById('small').addEventListener('caseChange', function(event) {
+      console.log('case is "small":', event.detail.matches);
+    }, false);
+
+    //Handle any case change
     document.addEventListener('caseChange', function(event) {
       console.log('caseChange.detail', event.detail);
     }, false);
+    
   }, false);
   </script>
 
 </head>
 <body>
-  <h1>Headcase.js</h1>
+  <div class="case-visual small">small</div>
+  <div class="case-visual medium">medium</div>
+  <div class="case-visual wide">wide</div>
+
+  <h1>Headcase.js test page</h1>
 
   <h2>Cases on this page</h2>
 
-  <pre>&lt;meta name='case' data='small' media='(min-width:0px) and (max-width:450px)' /&gt;
-&lt;meta name='case' data='medium' media='(min-width:450px) and (max-width:760px)' /&gt;
-&lt;meta name='case' data='wide' media='(min-width:760px)' /&gt;</pre>
+  <pre><span class="case-markup">&lt;meta name='case' content='small' media='(min-width:0px) and (max-width:450px)' /&gt;</span>
+<span class="case-markup">&lt;meta name='case' content='medium' media='(min-width:450px) and (max-width:760px)' /&gt;</span>
+<span class="case-markup">&lt;meta name='case' content='wide' media='(min-width:760px)' /&gt;</span></pre>
 
   <h2>Usage with css: </h2>
 
-  <p class="css">Case: </p>
+  <p class="css-text">Case: </p>
 
-  <pre>.case-small .css:after {
+  <pre>.case-small .css-text:after {
   content: 'Small';
 }
-.case-medium .css:after {
+.case-medium .css-text:after {
   content: 'Medium';
 }
-.case-wide .css:after {
+.case-wide .css-text:after {
   content: 'Wide';
 }</pre>
 
-  <h2>Cases via javascript events</h2>
-  <pre>document.addEventListener('caseChange', function(event) {
+  <h2>Usage with javascript</h2>
+  <pre>document.addEventListener('DOMContentLoaded', function() {
+
+  //Handle a particular case change
+  document.getElementById('small').addEventListener('caseChange', function(event) {
+    console.log('case small:', event.detail.matches);
+  }, false);
+
+  //Handle any case change
+  document.addEventListener('caseChange', function(event) {
     console.log('caseChange.detail', event.detail);
-  });</pre>
-  <p>(Fiddle with the browser window width and check your inspector console. The custom events work on Firefox, Opera and Chrome, need to find a polyfill for this)</p>
+  }, false);
+  
+}, false);</pre>
+  <p>(Fiddle with the browser window width and check your inspector console. Events have been tested to work on latest versions of Safari, Firefox, Chrome and Opera. Haven't started with IE yet.)</p>
 </body>
