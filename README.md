@@ -34,7 +34,8 @@ If a named media query matches, a class of <code>case-NAME</code> will be added 
     document.addEventListener('DOMContentLoaded', function() {
 
       //Handle a particular case change
-      document.getElementById('small').addEventListener('caseChange', function(event) {
+      var case = document.getElementById('small'); //The meta element that defined the case
+      case.addEventListener('caseChange', function(event) {
         console.log('case small:', event.detail.matches);
       }, false);
 
