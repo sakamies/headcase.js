@@ -38,7 +38,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 
 window.headcase = {};
 
-window.headcase.update = function() {
+window.headcase.update = function () {
 
   if (typeof window.headcase.caseList == 'undefined') {
     window.headcase.caseList = [];
@@ -78,25 +78,24 @@ window.headcase.update = function() {
     }
 
     /* 3. dispatch caseChange events */
-    if (document.createEvent && (prevMatches !== matches)) {
+    //TODO: creating an HTMLEvent that just had a custom name seemed to work on safari, could use that if CustomEvent is not defined. Need to test that on IE too, maybe it works just like that. As a last resort hack, could resort to piggybacking on some obscure event that's rarely used, or something. Or maybe just a custom event binding mechanism, like window.headcase.bind(caseName, function{}) just like many other similar js projects that use custom events.
+    if (typeof CustomEvent != 'undefined' && (prevMatches !== matches)) {
       var event = document.createEvent('CustomEvent');
 
-      if (typeof CustomEvent != 'undefined') {
-        var caseChangeEvent = new CustomEvent(
-          "caseChange",
-          {
-            detail: {  
-              caseName: caseName,
-              media: media,
-              matches: matches,
-              caseNode: caseNode
-            },  
-            bubbles: true,  
-            cancelable: true
-          }
-        );
-        document.dispatchEvent(caseChangeEvent);
-      };
+      var caseChangeEvent = new CustomEvent(
+        "caseChange",
+        {
+          detail: {  
+            caseName: caseName,
+            media: media,
+            matches: matches,
+            caseNode: caseNode
+          },  
+          bubbles: true,  
+          cancelable: true
+        }
+      );
+      document.dispatchEvent(caseChangeEvent);
 
     };
 
@@ -105,14 +104,28 @@ window.headcase.update = function() {
   return window.headcase.caseList;
 }
 
-window.addEventListener('resize', function() {
-  window.headcase.update();
-});
-window.addEventListener('orientationchange', function() {
-  window.headcase.update();
-});
-window.addEventListener('DOMContentLoaded', function() {
-  setTimeout(function() {
-    window.headcase.update();
-  }, 0);
-});
+window.headcase.init = function () {
+
+  window.addEventListener('DOMContentLoaded', function() {
+
+    /* Execute the first update right after DOMContentLoaded has fired, so if a script has event handlers in its own DOMContentLoaded, they will fire. */
+    // TODO: Is setTimeout the right way to do this? */
+    setTimeout(function() {
+      window.headcase.update();
+    }, 0);
+
+    window.addEventListener('resize', function() {
+      window.headcase.update();
+    });
+    window.addEventListener('orientationchange', function() {
+      window.headcase.update();
+    });
+
+  });
+
+}
+
+window.headcase.init();
+
+
+
