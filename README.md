@@ -52,15 +52,15 @@ The cases are re-checked whenever a <code>resize</code> or an <code>orientationc
 Compatibility
 ---
 
-So far tested to work on the latest version of Safari, Firefox, Chrome and Opera. No IE testing done yet.
+So far tested to work on Internet Explorer 9 and the latest versions of Safari, Firefox, Chrome, Opera.
 
 
 TODO
 ---
 
-- Find a good polyfill for custom events. jQuery would work, but i'd like to avoid dependencies, might be necessary if there starts to be a need for more polyfills. Safari seems happy with a custom named HTMLEvents type though.
 - Testing, testing and testing
-- Cross browser compatibility (I hate IE)
+- Test older versions of Safari, Firefox and Opera and IE for graceful exit
+- Should separate window.headcase.cases and html class updating from event firing. On init the cases and classes should be updated immediately, but events fired only after DOMContentLoaded
 - Should there be separate events for when a query becomes true and when it becomes false? There's now just a caseChange event per case, that contains the matches property.
 - Now that the events seem doable in a cross browser way, should the class stuff on the html element be removed? Since you can easily bind your own caseChange events, it's trivial to make your own class modifier.
 

@@ -38,6 +38,30 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 
 window.headcase = {};
 window.headcase.cases = {};
+window.headcase.prefix = 'case-';
+
+window.headcase.init = function () {
+  window.addEventListener('DOMContentLoaded', function() {
+
+    /* Execute the first update right after DOMContentLoaded has fired, so if another script has caseChange event handlers in its own DOMContentLoaded, they will fire. */
+    // TODO: Is setTimeout the right way to do this? Oh well, it works. */
+    setTimeout(function() {
+      window.headcase.update();
+    }, 0);
+
+    window.addEventListener('resize', function() {
+      window.headcase.update();
+    });
+    window.addEventListener('orientationchange', function() {
+      window.headcase.update();
+    });
+
+//TODO: Separate window.headcase.cases and html classes updating from firing events. On init the cases and classes should be updated immediately, but events fired only after DOMContentLoaded.
+
+    //TODO: Would be cool to add DOMNodeInserted, DOMNodeRemoved, DOMAttrModified listeners to head/meta elements so headcase can watch cases being added, removed or changed. Probably practically useless though. If done this way, the meta elements would stay as the canonical caselist and anything could add or remove them, and headcase would react appropriately. There's probably shitty browsers support for those events.
+
+  });
+}
 
 window.headcase.update = function () {
 
@@ -47,6 +71,7 @@ window.headcase.update = function () {
   var caseName;
   var media;
   var matches;
+  var prefix = window.headcase.prefix;
 
   for (var i = 0; i < caseNodes.length; i++) {
     caseName = caseNodes[i].getAttribute('content');
@@ -67,85 +92,59 @@ window.headcase.update = function () {
 
   for (caseName in cases) {
 
-    // Put the case immediately into window.headcase.cases
-    window.headcase.cases[caseName] = {};
-    window.headcase.cases[caseName].node = cases[caseName].node;
-    window.headcase.cases[caseName].media = cases[caseName].media;
-    window.headcase.cases[caseName].matches = cases[caseName].matches;
+    //Only do stuff if the case has changed
+    if (cases[caseName].prevMatches != cases[caseName].matches) {
 
-    //Add classes to <html>
-    if (cases[caseName].matches) {
-      document.documentElement.classList.add('case-' + caseName);
-    }
-    else {
-      document.documentElement.classList.remove('case-' + caseName);
-    }
+      // Put the case immediately into window.headcase.cases
+      window.headcase.cases[caseName] = {};
+      window.headcase.cases[caseName].node = cases[caseName].node;
+      window.headcase.cases[caseName].media = cases[caseName].media;
+      window.headcase.cases[caseName].matches = cases[caseName].matches;
 
-    /* Dispatch caseChange events */
+      //Add or remove appropriate class to/from <html>
+      var classList = document.documentElement.className.split(/\s+/);
+      var caseClass = prefix + caseName;
+      var classIndex = classList.indexOf(caseClass);
+      if (cases[caseName].matches && classIndex == -1) {
+        classList.push(caseClass);
+        document.documentElement.className = classList.join(' ');
+      }
+      else if (classIndex != -1) {
+        classList.splice(classIndex, 1);
+        document.documentElement.className = classList.join(' ');
+      }
 
-
-    if (typeof CustomEvent != 'undefined' && cases[caseName].prevMatches != cases[caseName].matches) {
-      var caseChangeEvent = new CustomEvent(
-        "caseChange",
-        {
-          detail: {
+      /* Dispatch caseChange events */
+      if (typeof CustomEvent != 'undefined') {
+        var caseChangeEvent = document.createEvent('CustomEvent');
+        caseChangeEvent.initCustomEvent(
+          'caseChange',
+          true,
+          false,
+          {
             caseName: caseName,
             media: cases[caseName].media,
             matches: cases[caseName].matches,
             caseNode: cases[caseName].node
-          },
-          bubbles: true,
-          cancelable: false
-        }
-      );
-      cases[caseName].node.dispatchEvent(caseChangeEvent);
-
-    }
-    else if (typeof document.createEvent('HTMLEvents') != 'undefined' && cases[caseName].prevMatches != cases[caseName].matches) {
-      var caseChangeEvent = document.createEvent('HTMLEvents');
-      caseChangeEvent.initEvent('caseChange', true, false);
-      caseChangeEvent.detail = {
-        caseName: caseName,
-        media: cases[caseName].media,
-        matches: cases[caseName].matches,
-        caseNode: cases[caseName].node
+          }
+        );
+        cases[caseName].node.dispatchEvent(caseChangeEvent);
       }
-      cases[caseName].node.dispatchEvent(caseChangeEvent);
-    }
-
-    //TODO: creating an HTMLEvent that just had a custom name seemed to work on safari, could use that if CustomEvent is not defined. Need to test that on IE too, maybe it works just like that. As a last resort hack, could resort to piggybacking on some regular event, like active, change, blur, something. Or maybe just a custom event binding mechanism, like window.headcase.bind(caseName, function{}) just like many other similar js projects that use custom events.
-
-    //TODO: should there be separate events for case match and case unmatch? Each case should have a separate event in any case. So you can bind a listener to just a specific case, instead of figuring out which case fired the event in the handler function.
-    
-    //TODO: update readme accordingly, no more document.addEventListener('caseChange'), instead use caseElement.addEventListener('caseChange')
-
+      else if (typeof document.createEvent('HTMLEvents') != 'undefined') {
+        var caseChangeEvent = document.createEvent('HTMLEvents');
+        caseChangeEvent.initEvent('caseChange', true, false);
+        caseChangeEvent.detail = {
+          caseName: caseName,
+          media: cases[caseName].media,
+          matches: cases[caseName].matches,
+          caseNode: cases[caseName].node
+        }
+        cases[caseName].node.dispatchEvent(caseChangeEvent);
+      }
+    };
   }
 
   return window.headcase.cases;
-}
-
-
-window.headcase.init = function () {
-
-  window.addEventListener('DOMContentLoaded', function() {
-
-    /* Execute the first update right after DOMContentLoaded has fired, so if another script has caseChange event handlers in its own DOMContentLoaded, they will fire. */
-    // TODO: Is setTimeout the right way to do this? Oh well, it works. */
-    setTimeout(function() {
-      window.headcase.update();
-    }, 0);
-
-    window.addEventListener('resize', function() {
-      window.headcase.update();
-    });
-    window.addEventListener('orientationchange', function() {
-      window.headcase.update();
-    });
-
-    //TODO: Would be cool to add DOMNodeInserted, DOMNodeRemoved, DOMAttrModified listeners to head/meta elements so headcase can watch cases being added, removed or changed. Probably practically useless though. If done this way, the meta elements would stay as the canonical caselist and anything could add or remove them, and headcase would react appropriately. There's probably shitty browsers support for those events.
-
-  });
-
 }
 
 window.headcase.init();
